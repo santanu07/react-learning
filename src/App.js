@@ -1,64 +1,42 @@
+// Follow the instructions explained in the problem video and try to implement a solution on your own. Compare it with my solution (video + downloadable files) thereafter.
+
+// The instructions are:
+
+// Create TWO new components: UserInput and UserOutput
+// UserInput should hold an input element, UserOutput two paragraphs
+// Output multiple UserOutput components in the App component (any paragraph texts of your choice)
+// Pass a username (of your choice) to UserOutput via props and display it there
+// Add state to the App component (=> the username) and pass the username to the UserOutput component
+// Add a method to manipulate the state (=> an event-handler method)
+// Pass the event-handler method reference to the UserInput component and bind it to the input-change event
+// Ensure that the new input entered by the user overwrites the old username passed to UserOutput
+// Add two-way-binding to your input (in UserInput) to also display the starting username
+// Add styling of your choice to your components/ elements in the components - both with inline styles and stylesheets
+
 import React, { Component } from 'react';
 import './App.css';
-import Person from './Person/Person';
+import UserOutput from './UserOutput/UserOutput';
+import UserInput from './UserInput/UserInput';
 
 class App extends Component {
   state = {
-    persons: [
-      { name: 'Santanu', age: 29 },
-      { name: 'Sourav', age: 28 },
-      { name: 'kajal', age: 27 }
-    ]
+    userName: 'Santanu'
   }
 
-  switchNameHandler = () => {
-    // console.log('was clicked'); 
+  userNameChangeHandler = (event) => {
     this.setState({
-      persons: [
-        { name: 'Santanu', age: 29 },
-        { name: 'Sourav', age: 28 },
-        { name: 'kajal', age: 26 }
-      ]
-    })
-  }
-
-  nameChangedHandler = (event) => {
-    this.setState({
-      persons: [
-        { name: 'Santanu', age: 29 },
-        { name: event.target.value, age: 28 },
-        { name: 'kajal', age: 26 }
-      ]
+      userName: event.target.value
     })
   }
 
   render() {
-    const style = {
-      backgroundColor: 'white',
-      font: 'inherit',
-      border: '1px solid blue',
-      padding: '8px'
-    }
     return (
       <div className="App">
-        <p>HI I'm react App</p>
-        <p>It's realy working</p>
-        <button
-          style={style}
-          onClick={() => this.switchNameHandler('Santanu!!')}>Switch Name</button>
-        <Person
-          name={this.state.persons[0].name}
-          age={this.state.persons[0].age} />
-        <Person
-          name={this.state.persons[1].name}
-          age={this.state.persons[1].age}
-          click={this.switchNameHandler.bind(this, 'San!')}
-          changed={this.nameChangedHandler}>My hobbies : Racing</Person>
-        <Person
-          name={this.state.persons[2].name}
-          age={this.state.persons[2].age} />
+        <UserInput changed={this.userNameChangeHandler} userName={this.state.userName} />
+        <UserOutput userName={this.state.userName} />
+        <UserOutput userName={this.state.userName} />
+        <UserOutput userName={this.state.userName} />
       </div>
-      // React.createElement('div', {className:'App'}, React.createElement('h1', null ,'Hi I\'m React App' ))
     );
   }
 
