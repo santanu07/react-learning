@@ -1,42 +1,74 @@
-// Follow the instructions explained in the problem video and try to implement a solution on your own. Compare it with my solution (video + downloadable files) thereafter.
-
-// The instructions are:
-
-// Create TWO new components: UserInput and UserOutput
-// UserInput should hold an input element, UserOutput two paragraphs
-// Output multiple UserOutput components in the App component (any paragraph texts of your choice)
-// Pass a username (of your choice) to UserOutput via props and display it there
-// Add state to the App component (=> the username) and pass the username to the UserOutput component
-// Add a method to manipulate the state (=> an event-handler method)
-// Pass the event-handler method reference to the UserInput component and bind it to the input-change event
-// Ensure that the new input entered by the user overwrites the old username passed to UserOutput
-// Add two-way-binding to your input (in UserInput) to also display the starting username
-// Add styling of your choice to your components/ elements in the components - both with inline styles and stylesheets
-
 import React, { Component } from 'react';
 import './App.css';
-import UserOutput from './UserOutput/UserOutput';
-import UserInput from './UserInput/UserInput';
+import Person from './Person/Person';
 
 class App extends Component {
   state = {
-    userName: 'Santanu'
+    persons: [
+      { name: 'Santanu', age: 29 },
+      { name: 'Sourav', age: 28 },
+      { name: 'kajal', age: 27 }
+    ],
+    otherState: 'some other value',
+    showPersons: false
   }
 
-  userNameChangeHandler = (event) => {
+  switchNameHandler = () => {
+    // console.log('was clicked'); 
     this.setState({
-      userName: event.target.value
+      persons: [
+        { name: 'Santanu', age: 29 },
+        { name: 'Sourav', age: 28 },
+        { name: 'kajal', age: 26 }
+      ]
     })
   }
 
+  nameChangedHandler = (event) => {
+    this.setState({
+      persons: [
+        { name: 'Santanu', age: 29 },
+        { name: event.target.value, age: 28 },
+        { name: 'kajal', age: 26 }
+      ]
+    })
+  }
+
+  togglePersonsHandler = () => {
+    const doesShow = this.state.showPersons;
+    this.setState({ showPersons: !doesShow });
+  }
+
   render() {
+
+    const style = {
+      backgroundColor: 'white',
+      font: 'inherit',
+      border: '1px solid blue',
+      padding: '8px'
+    }
+    let persons = null;
+    if (this.state.showPersons) {
+      persons = (
+        <div>
+          {this.state.persons.map((person, index) => {
+            return <Person
+              name={person.name}
+              age={person.age} />
+          })}
+        </div>
+      )
+    }
     return (
       <div className="App">
-        <UserInput changed={this.userNameChangeHandler} userName={this.state.userName} />
-        <UserOutput userName={this.state.userName} />
-        <UserOutput userName={this.state.userName} />
-        <UserOutput userName={this.state.userName} />
+        <p>HI I'm react App</p>
+        <p>It's realy working</p>
+        <button
+          style={style}
+          onClick={this.togglePersonsHandler}>Toggle Persons</button>
+        {persons}
       </div>
+      // React.createElement('div', {className:'App'}, React.createElement('h1', null ,'Hi I\'m React App' ))
     );
   }
 
